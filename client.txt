@@ -1,0 +1,39 @@
+#include<SoftwareSerial.h>
+SoftwareSerial client(9,10);
+void setup()
+{
+  client.begin(115200);
+  client.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
+  delay(1000);
+  client.println("AT+SAPBR=3,1,\"APN\",\"airtelgprs.com\"");//APN
+  delay(1000);
+  client.println("AT+SAPBR=3,1,\"USER\",\"\"");//APN
+  delay(1000);
+  client.println("AT+SAPBR=3,1,\"PWD\",\"\"");//APN
+  delay(1000);
+  client.println("AT+SAPBR=1,1");
+  delay(1000);
+  client.println("AT+SAPBR=2,1");
+  delay(1000);
+ }
+void loop()
+{
+  client.println("AT+HTTPINIT");
+  delay(1000);
+  client.println("AT+HTTPPARA=\"CID\",1");
+  delay(1000);
+  ShowSerialData();
+  client.println("AT+HTTPPARA=\"URL\",\"http://xw8zf.localto.net/polls\"");
+  delay(1000);
+  client.println("AT+HTTPPARA=\"CONTENT\",\"application/json\"");
+  delay(1000);
+  ShowSerialData();
+
+  String reading= "1";
+
+  client.println("AT+HTTPDATA=" + String(reading.length()) + ",100000");
+  delay(5000);
+  client.println("AT+HTTPACTION=1");
+  delay(5000);
+  }
+
